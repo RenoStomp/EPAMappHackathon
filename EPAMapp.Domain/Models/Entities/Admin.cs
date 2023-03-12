@@ -2,8 +2,9 @@
 
 namespace EPAMapp.Domain.Models.Entities
 {
-    public class User : AccountHolder
+    public class Admin : AccountHolder
     {
-        public List<Note> Notes { get; set; }
+        public string NickName { get; set; }
+        
     }
 }

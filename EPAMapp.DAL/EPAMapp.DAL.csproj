@@ -21,4 +21,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0-preview.1.23110.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EPAMapp.Domain\EPAMapp.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
