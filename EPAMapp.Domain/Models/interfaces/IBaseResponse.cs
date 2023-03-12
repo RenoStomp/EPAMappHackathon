@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EPAMapp.Domain.Models.Interfaces
+﻿namespace EPAMapp.Domain.Models.Interfaces
 {
-    internal interface IBaseResponse
+    public interface IBaseResponse<T>
     {
+        string Description { get; }
+        T Data { get; }
     }
 }
