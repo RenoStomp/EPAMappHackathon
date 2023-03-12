@@ -7,10 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Common\" />
     <Folder Include="Models\Entities\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Response\" />
+    <Folder Include="Models\Interfaces\" />
+    <Folder Include="Models\Response\" />
   </ItemGroup>
 
 </Project>
