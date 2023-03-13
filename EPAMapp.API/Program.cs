@@ -1,6 +1,27 @@
+using EPAMapp.API;
+using EPAMapp.DAL.SqlServer;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+
+
+
+
+
+
+var connection = builder.Configuration.GetConnectionString("ConnectionString");
+
+builder.Services.AddDbContext<AppDbContext>(option => option.UseSqlServer(connection));
+builder.Services.InitializeRepositories();
+builder.Services.InitializeServeces();
+
+
+
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
