@@ -4,7 +4,9 @@ using EPAMapp.Domain.Models.Common;
 using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Domain.Models.Interfaces;
 using EPAMapp.Domain.Models.Response;
+using EPAMapp.Services.DTO.Update;
 using EPAMapp.Services.Interfaces;
+using EPAMapp.Services.Update;
 
 namespace EPAMapp.Services.Implementations
 {
@@ -93,33 +95,21 @@ namespace EPAMapp.Services.Implementations
                     };
                 }
 
-                if (entity is User user && model is User userModel)
-                {
-                    user.Name = userModel.Name;
-                    user.Surname = userModel.Surname;
-                    user.Email = userModel.Email;
-                    user.Password = userModel.Password;
-                }
-                else if (entity is Note note && model is Note noteModel)
-                {
-                    note.Report = noteModel.Report;
-                    note.UserId = noteModel.UserId;
-                }
-                else if (entity is Admin admin && model is Admin adminModel)
-                {
-                    admin.Name = adminModel.Name;
-                    admin.Surname = adminModel.Surname;
-                    admin.Email = adminModel.Email;
-                    admin.Password = adminModel.Password;
-                    admin.NickName = adminModel.NickName;
-                }
+                if (entity is User user && model is DTOUpdateUser userModel)
+                    await UpdateUser.Update(user, userModel);
+                
+                else if (entity is Note note && model is DTOUpdateNote noteModel)
+                    await UpdateNote.Update(note, noteModel);
+                
+                else if (entity is Admin admin && model is DTOUpdateAdmin adminModel)
+                    await UpdateAdmin.Update(admin, adminModel);
+
                 else
-                {
                     return new BaseResponse<T>
                     {
                         Description = "Entity type not supported for update"
                     };
-                }
+                
 
                 await _repository.Update(entity);
                 return new BaseResponse<T>()
