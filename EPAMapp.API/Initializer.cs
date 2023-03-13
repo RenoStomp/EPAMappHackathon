@@ -1,6 +1,7 @@
 ﻿using EPAMapp.DAL.Repositories.Implementations;
 using EPAMapp.DAL.Repositories.Interfaces;
 using EPAMapp.Domain.Models.Entities;
+using EPAMapp.Services.Implementations;
 using EPAMapp.Services.Interfaces;
 
 namespace EPAMapp.API
@@ -15,7 +16,10 @@ namespace EPAMapp.API
         }
         public static void InitializeServeces(this IServiceCollection services)
         {
-            services.AddScoped<IAsyncBaseService>
+            services.AddScoped<IAsyncBaseService<User>, AsyncBaseService<User>>();
+            services.AddScoped<IAsyncBaseService<Note>, AsyncBaseService<Note>>();
+            services.AddScoped<IAsyncBaseService<Admin>, AsyncBaseService<Admin>>();    
+
         }
     }
 }
