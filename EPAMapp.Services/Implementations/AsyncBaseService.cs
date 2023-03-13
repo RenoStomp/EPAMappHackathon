@@ -1,10 +1,10 @@
-﻿using EPAMapp.DAL.Repositories.Interfaces;
+﻿using EPAMapp.DAL.DataBaseExists;
+using EPAMapp.DAL.Repositories.Interfaces;
 using EPAMapp.Domain.Models.Common;
 using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Domain.Models.Interfaces;
 using EPAMapp.Domain.Models.Response;
 using EPAMapp.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace EPAMapp.Services.Implementations
 {
@@ -21,7 +21,7 @@ namespace EPAMapp.Services.Implementations
         {
             try
             {
-                if (EntityIsNotExist(model)) return new BaseResponse<T>()
+                if (Exist<T>.EntityIsNotExist(model)) return new BaseResponse<T>()
                 {
                     Description = "Created entity not found"
                 };
@@ -42,7 +42,7 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var entities = _repository.Get().ToList();
-                if (EntityIsNoExist(entities)) return new BaseResponse<List<T>>()
+                if (Exist<T>.EntityIsNoExist(entities)) return new BaseResponse<List<T>>()
                 {
                     Description = "Entities not found"
                 };
@@ -58,12 +58,12 @@ namespace EPAMapp.Services.Implementations
             }
         }
 
-        public IBaseResponse<T> GetById(int id)
+        public IBaseResponse<T> GetModelById(int id)
         {
             try
             {
-                var entity = GetEntityById(id);
-                if (EntityIsNotExist(entity)) return new BaseResponse<T>()
+                var entity = _repository.GetById(id);
+                if (Exist<T>.EntityIsNotExist(entity)) return new BaseResponse<T>()
                 {
                     Description = "Entity not found"
                 };
@@ -84,13 +84,13 @@ namespace EPAMapp.Services.Implementations
         {
             try
             {
-                var entity = await GetEntityByIdAsync(model.Id);
-                if (EntityIsNotExist(entity)) return new BaseResponse<T>
+                var entity = await _repository.GetByIdAsync(model.Id);
+                if (Exist<T>.EntityIsNotExist(entity)) return new BaseResponse<T>
                 {
                     Description = "Entity to be updated was not found"
                 };
 
-                if(typeof(T) == typeof(User))
+                if (typeof(T) == typeof(User))
                 {
                     User? _user = entity as User;
                     User? _model = entity as User;
@@ -99,14 +99,14 @@ namespace EPAMapp.Services.Implementations
                     _user.Email = _model.Email;
                     _user.Password = _model.Password;
                 }
-                if(typeof(T) == typeof(Note))
+                if (typeof(T) == typeof(Note))
                 {
                     Note? _note = entity as Note;
                     Note? _model = entity as Note;
                     _note.Report = _model.Report;
                     _note.UserId = _model.UserId;
                 }
-                if(typeof(T) == typeof(Admin))
+                if (typeof(T) == typeof(Admin))
                 {
                     Admin? _admin = entity as Admin;
                     Admin? _model = entity as Admin;
@@ -116,7 +116,7 @@ namespace EPAMapp.Services.Implementations
                     _admin.Password = _model.Password;
                     _admin.NickName = _model.NickName;
                 }
-                if(EntityIsNotExist(entity)) return new BaseResponse<T>
+                if (Exist<T>.EntityIsNotExist(entity)) return new BaseResponse<T>
                 {
                     Description = "Entity not update"
                 };
@@ -136,7 +136,7 @@ namespace EPAMapp.Services.Implementations
         {
             try
             {
-                if (EntityIsNotExist(model)) return new BaseResponse<T>
+                if (Exist<T>.EntityIsNotExist(model)) return new BaseResponse<T>
                 {
                     Description = "Entity to be deleted was not found "
                 };
@@ -151,37 +151,6 @@ namespace EPAMapp.Services.Implementations
             {
                 return new BaseResponse<T>() { Description = e.Message };
             }
-        }
-        public T GetEntityById(int id)
-        {
-           var entity = _repository.Get().FirstOrDefault(x => x.Id == id);
-           if (EntityIsNotExist(entity)) 
-                return default(T);
-            
-           return entity;           
-        }
-        public async Task<T> GetEntityByIdAsync(int id)
-        {
-            var entity = await _repository.Get().FirstOrDefaultAsync(x => x.Id == id);
-            if (EntityIsNotExist(entity)) 
-                return default(T);
-
-            return entity;
-
-        }
-        public bool EntityIsNotExist(T entity)
-        {
-            if (entity == null)
-                return true;
-
-            return false;
-        }
-        public bool EntityIsNoExist(List<T> entities)
-        {
-            if (entities == null || !entities.Any())
-                return true;
-
-            return false;
         }
     }
 }

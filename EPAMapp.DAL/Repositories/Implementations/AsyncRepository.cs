@@ -1,4 +1,5 @@
-﻿using EPAMapp.DAL.Repositories.Interfaces;
+﻿using EPAMapp.DAL.DataBaseExists;
+using EPAMapp.DAL.Repositories.Interfaces;
 using EPAMapp.DAL.SqlServer;
 using EPAMapp.Domain.Models.Common;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,7 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
         public async Task Create(T entity)
         {
-            if (DataBaseIsNotExist()) return;
+            if (Exist<T>.DataBaseIsNotExist(_context)) return;
 
             await _context.Set<T>().AddAsync(entity);
             await _context.SaveChangesAsync();
@@ -24,14 +25,30 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
         public IQueryable<T> Get()
         {
-            if(DataBaseIsNotExist()) return default(IQueryable<T>);
+            if(Exist<T>.DataBaseIsNotExist(_context)) return default(IQueryable<T>);
 
             return _context.Set<T>();
+        }
+        public T GetById(int id)
+        {
+            var entity = Get().FirstOrDefault(x => x.Id == id);
+            if (Exist<T>.EntityIsNotExist(entity))
+                return default(T);
+
+            return entity;
+        }
+        public async Task<T> GetByIdAsync(int id)
+        {
+            var entity = await Get().FirstOrDefaultAsync(x => x.Id == id);
+            if (Exist<T>.EntityIsNotExist(entity))
+                return default(T);
+
+            return entity;
         }
 
         public async Task Update(T entity)
         {
-            if (DataBaseIsNotExist()) return;
+            if (Exist<T>.DataBaseIsNotExist(_context)) return;
 
             _context.Set<T>().Update(entity);
             await _context.SaveChangesAsync();
@@ -39,17 +56,10 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
         public async Task Delete(T entity)
         {
-            if (DataBaseIsNotExist()) return;
+            if (Exist<T>.DataBaseIsNotExist(_context)) return;
 
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
-        }
-        public bool DataBaseIsNotExist()
-        {
-            if (_context.Set<T>() == default(DbSet<T>)) 
-                return true;
-
-            return false;
         }
     }
 }
