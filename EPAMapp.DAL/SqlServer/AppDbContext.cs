@@ -49,7 +49,7 @@ namespace EPAMapp.DAL.SqlServer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var configPath = Path.Combine("..", "EPAMapp.API\\bin\\Debug\\net6.0", "appsettings.json");
+            var configPath = Path.Combine("..", "EPAMapp.API", "appsettings.Development.json");
             dynamic config = JsonConvert.DeserializeObject(File.ReadAllText(configPath));
 
             JsonHolder.ConnectionString = config.ConnectionStrings.ConnectionString;
