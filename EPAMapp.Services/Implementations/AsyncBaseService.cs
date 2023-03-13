@@ -85,41 +85,41 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var entity = await _repository.GetByIdAsync(model.Id);
-                if (Exist<T>.EntityIsNotExist(entity)) return new BaseResponse<T>
+                if (Exist<T>.EntityIsNotExist(entity))
                 {
-                    Description = "Entity to be updated was not found"
-                };
+                    return new BaseResponse<T>
+                    {
+                        Description = "Entity to be updated was not found"
+                    };
+                }
 
-                if (typeof(T) == typeof(User))
+                if (entity is User user && model is User userModel)
                 {
-                    User? _user = entity as User;
-                    User? _model = entity as User;
-                    _user.Name = _model.Name;
-                    _user.Surname = _model.Surname;
-                    _user.Email = _model.Email;
-                    _user.Password = _model.Password;
+                    user.Name = userModel.Name;
+                    user.Surname = userModel.Surname;
+                    user.Email = userModel.Email;
+                    user.Password = userModel.Password;
                 }
-                if (typeof(T) == typeof(Note))
+                else if (entity is Note note && model is Note noteModel)
                 {
-                    Note? _note = entity as Note;
-                    Note? _model = entity as Note;
-                    _note.Report = _model.Report;
-                    _note.UserId = _model.UserId;
+                    note.Report = noteModel.Report;
+                    note.UserId = noteModel.UserId;
                 }
-                if (typeof(T) == typeof(Admin))
+                else if (entity is Admin admin && model is Admin adminModel)
                 {
-                    Admin? _admin = entity as Admin;
-                    Admin? _model = entity as Admin;
-                    _admin.Name = _model.Name;
-                    _admin.Surname = _model.Surname;
-                    _admin.Email = _model.Email;
-                    _admin.Password = _model.Password;
-                    _admin.NickName = _model.NickName;
+                    admin.Name = adminModel.Name;
+                    admin.Surname = adminModel.Surname;
+                    admin.Email = adminModel.Email;
+                    admin.Password = adminModel.Password;
+                    admin.NickName = adminModel.NickName;
                 }
-                if (Exist<T>.EntityIsNotExist(entity)) return new BaseResponse<T>
+                else
                 {
-                    Description = "Entity not update"
-                };
+                    return new BaseResponse<T>
+                    {
+                        Description = "Entity type not supported for update"
+                    };
+                }
 
                 await _repository.Update(entity);
                 return new BaseResponse<T>()
@@ -132,6 +132,7 @@ namespace EPAMapp.Services.Implementations
                 return new BaseResponse<T>() { Description = e.Message };
             }
         }
+
         public async Task<IBaseResponse<T>> Delete(T model)
         {
             try
