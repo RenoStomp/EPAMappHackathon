@@ -1,11 +1,12 @@
 ﻿using EPAMapp.Domain.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace EPAMapp.DAL.SqlServer
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<User> Users{ get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Note> Notes { get; set; }
 
@@ -44,11 +45,16 @@ namespace EPAMapp.DAL.SqlServer
                 .WithMany(client => client.Notes)
                 .HasForeignKey(order => order.UserId)
                 /*.OnDelete(DeleteBehavior.Cascade)*/;
-            
-
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var configPath = Path.Combine("..", "EPAMapp.API", "appsettings.json");
+            dynamic config = JsonConvert.DeserializeObject(File.ReadAllText(configPath));
 
+            JsonHolder.ConnectionString = config.ConnectionStrings.ConnectionString;
 
+            optionsBuilder.UseSqlServer(JsonHolder.ConnectionString);
+        }
     }
 }
