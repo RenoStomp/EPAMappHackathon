@@ -7,7 +7,7 @@ namespace EPAMapp.Services.Update
     {
         public static async Task Update(Note note, DTOUpdateNote noteModel)
         {
-            note.Report = noteModel.Report;
+            note.CurrentReport = noteModel.CurrentReport;
             note.UserId = noteModel.UserId;
         }
     }

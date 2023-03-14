@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="6.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EPAMapp.DAL\EPAMapp.DAL.csproj" />
     <ProjectReference Include="..\EPAMapp.Domain\EPAMapp.Domain.csproj" />
   </ItemGroup>
