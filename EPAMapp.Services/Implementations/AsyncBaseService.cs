@@ -1,6 +1,7 @@
 ﻿using EPAMapp.DAL.DataBaseExists;
 using EPAMapp.DAL.Repositories.Interfaces;
 using EPAMapp.Domain.Models.Common;
+using EPAMapp.Domain.Models.DTO.Common;
 using EPAMapp.Domain.Models.Interfaces;
 using EPAMapp.Domain.Models.Response;
 using EPAMapp.Services.Interfaces;
@@ -9,171 +10,172 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EPAMapp.Services.Implementations
 {
-    public class AsyncBaseService<T> : IAsyncBaseService<T> 
-        where T : BaseEntity
+    public class AsyncBaseService<T, Tmodel> : IAsyncBaseService<T, Tmodel> 
+        where T : BaseDTO
+        where Tmodel : BaseEntity
     {
-        private readonly IAsyncRepository<T> _repository;
+        private readonly IAsyncRepository<Tmodel> _repository;
 
-        public AsyncBaseService(IAsyncRepository<T> repository)
+        public AsyncBaseService(IAsyncRepository<Tmodel> repository)
         {
             _repository = repository;
         }
-
-        public async Task<IBaseResponse<T>> Create(T model)
-        {
+        //TODO: create DTOCREATE
+        public async Task<IBaseResponse<Tmodel>> Create(T model)
+        {//TODO: Map DTOCREATE on BaseEntity
             try
             {
-                if (Exist<T>.EntityIsNotExist(model)) return new BaseResponse<T>()
+                if (Exist<Tmodel, T>.EntityIsNotExist(model)) return new BaseResponse<Tmodel>()
                 {
                     Description = "Created entity not found"
                 };
                 await _repository.Create(model);
-                return new BaseResponse<T>()
+                return new BaseResponse<Tmodel>()
                 {
-                    Data = model
+                    Data = model as Tmodel
                 };
             }
             catch (Exception e)
             {
-                return new BaseResponse<T>() { Description = e.Message };
+                return new BaseResponse<Tmodel>() { Description = e.Message };
             }
         }
 
-        public IBaseResponse<List<T>> GetAll()
+        public IBaseResponse<List<Tmodel>> GetAll()
         {
             try
             {
                 var entities = _repository.Get().ToList();
-                if (Exist<T>.EntityIsNoExist(entities)) return new BaseResponse<List<T>>()
+                if (Exist<Tmodel, T>.EntityIsNoExist(entities)) return new BaseResponse<List<Tmodel>>()
                 {
                     Description = "Entities not found"
                 };
 
-                return new BaseResponse<List<T>>()
+                return new BaseResponse<List<Tmodel>>()
                 {
                     Data = entities
                 };
             }
             catch (Exception e)
             {
-                return new BaseResponse<List<T>>() { Description = e.Message };
+                return new BaseResponse<List<Tmodel>>() { Description = e.Message };
             }
         }
-        public async Task<IBaseResponse<List<T>>> GetAllAsync()
+        public async Task<IBaseResponse<List<Tmodel>>> GetAllAsync()
         {
             try
             {
                 var entities = await _repository.GetAsync().Result.ToListAsync();
-                if (Exist<T>.EntityIsNoExist(entities)) return new BaseResponse<List<T>>()
+                if (Exist<Tmodel, T>.EntityIsNoExist(entities)) return new BaseResponse<List<Tmodel>>()
                 {
                     Description = "Entities not found"
                 };
 
-                return new BaseResponse<List<T>>()
+                return new BaseResponse<List<Tmodel>>()
                 {
                     Data = entities
                 };
             }
             catch (Exception e)
             {
-                return new BaseResponse<List<T>>() { Description = e.Message };
+                return new BaseResponse<List<Tmodel>>() { Description = e.Message };
             }
         }
 
-        public IBaseResponse<T> GetModelById(int id)
+        public IBaseResponse<Tmodel> GetModelById(int id)
         {
             try
             {
                 var entity = _repository.GetById(id);
-                if (Exist<T>.EntityIsNotExist(entity)) return new BaseResponse<T>()
+                if (Exist<Tmodel, T>.EntityIsNotExist(entity)) return new BaseResponse<Tmodel>()
                 {
                     Description = "Entity not found"
                 };
 
-                return new BaseResponse<T>()
+                return new BaseResponse<Tmodel>()
                 {
                     Data = entity
                 };
             }
             catch (Exception e)
             {
-                return new BaseResponse<T>() { Description = e.Message };
+                return new BaseResponse<Tmodel>() { Description = e.Message };
             }
         }
-        public async Task<IBaseResponse<T>> GetNotesModelsByUserIdAsync(int id)
+        public async Task<IBaseResponse<Tmodel>> GetNotesModelsByUserIdAsync(int id)
         {
             try
             {
                 
                 var entities = await _repository.GetNotesByUserIdAsync(id).Result.ToListAsync();
-                if (Exist<T>.EntityIsNotExist(entities as T)) return new BaseResponse<T>()
+                if (Exist<Tmodel, T>.EntityIsNotExist(entities as T)) return new BaseResponse<Tmodel>()
                 {
                     Description = "Entity not found"
                 };
-                return new BaseResponse<T>()
+                return new BaseResponse<Tmodel>()
                 {
-                    Data = entities as T
+                    Data = entities as Tmodel
                 };
             }
             catch (Exception e)
             {
-                return new BaseResponse<T>() { Description = e.Message };
+                return new BaseResponse<Tmodel>() { Description = e.Message };
             }
         }
 
-        public async Task<IBaseResponse<T>> Update(T model)
+        public async Task<IBaseResponse<Tmodel>> Update(T model)
         {
             try
             {
                 var entity = await _repository.GetByIdAsync(model.Id);
-                if (Exist<T>.EntityIsNotExist(entity))
+                if (Exist<Tmodel, T>.EntityIsNotExist(entity as T))
                 {
-                    return new BaseResponse<T>
+                    return new BaseResponse<Tmodel>
                     {
                         Description = "Entity to be updated was not found"
                     };
                 }
 
-                Mapper<BaseEntity, T> mapper = new();
-                entity = mapper.Map(model) as T;
+                Mapper<Tmodel, T> mapper = new();
+                entity = mapper.Map(model) as Tmodel;
 
                 await _repository.Update(entity);
-                return new BaseResponse<T>()
+                return new BaseResponse<Tmodel>()
                 {
                     Data = entity
                 };
             }
             catch (Exception e)
             {
-                return new BaseResponse<T>() { Description = e.Message };
+                return new BaseResponse<Tmodel>() { Description = e.Message };
             }
         }
 
-        public async Task<IBaseResponse<T>> Delete(T model)
+        public async Task<IBaseResponse<Tmodel>> Delete(T model)
         {
             try
             {
-                if (Exist<T>.EntityIsNotExist(model)) return new BaseResponse<T>
+                if (Exist<Tmodel, T>.EntityIsNotExist(model)) return new BaseResponse<Tmodel>
                 {
                     Description = "Entity to be deleted was not found "
                 };
 
-                await _repository.Delete(model);
-                return new BaseResponse<T>()
+                await _repository.Delete(model as Tmodel);
+                return new BaseResponse<Tmodel>()
                 {
-                    Data = model
+                    Data = model as Tmodel
                 };
             }
             catch (Exception e)
             {
-                return new BaseResponse<T>() { Description = e.Message };
+                return new BaseResponse<Tmodel>() { Description = e.Message };
             }
         }
 
         public  async Task DeleteById(int id)
         {
             var entity = await _repository.GetByIdAsync(id);
-            await Delete(entity);
+            await Delete(entity as T);
         }
     }
 }

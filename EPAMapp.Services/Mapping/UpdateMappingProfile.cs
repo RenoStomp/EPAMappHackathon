@@ -4,10 +4,10 @@ using EPAMapp.Services.DTO.Update;
 
 namespace EPAMapp.Services.Mapping
 {
-    public class MappingProfile : Profile
+    public class UpdateMappingProfile : Profile
     {
 
-        public MappingProfile()
+        public UpdateMappingProfile()
         {
             ConfigureDTOUpdateUserMap();
             ConfigureDTOUpdateAdminMap();

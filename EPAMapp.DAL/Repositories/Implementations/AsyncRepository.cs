@@ -2,6 +2,7 @@
 using EPAMapp.DAL.Repositories.Interfaces;
 using EPAMapp.DAL.SqlServer;
 using EPAMapp.Domain.Models.Common;
+using EPAMapp.Domain.Models.DTO.Common;
 using EPAMapp.Domain.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,7 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
         public async Task Create(T entity)
         {
-            if (Exist<T>.DataBaseIsNotExist(_context))
+            if (Exist<T, BaseDTO>.DataBaseIsNotExist(_context))
                 return;
 
             await _context.Set<T>().AddAsync(entity);
@@ -27,14 +28,14 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
         public IQueryable<T> Get()
         {
-            if (Exist<T>.DataBaseIsNotExist(_context))
+            if (Exist<T, BaseDTO>.DataBaseIsNotExist(_context))
                 return default(IQueryable<T>);
 
             return _context.Set<T>();
         }
         public async Task<IQueryable<T>> GetAsync()
         {
-            if (Exist<T>.DataBaseIsNotExist(_context))
+            if (Exist<T, BaseDTO>.DataBaseIsNotExist(_context))
                 return default(IQueryable<T>);
 
             return await Task.FromResult(_context.Set<T>());
@@ -43,7 +44,7 @@ namespace EPAMapp.DAL.Repositories.Implementations
         public T GetById(int id)
         {
             var entity = Get().FirstOrDefault(x => x.Id == id);
-            if (Exist<T>.EntityIsNotExist(entity))
+            if (Exist<T, BaseDTO>.EntityIsNotExist(entity))
                 return default(T);
 
             return entity;
@@ -51,21 +52,21 @@ namespace EPAMapp.DAL.Repositories.Implementations
         public async Task<T> GetByIdAsync(int id)
         {
             var entity = await Get().FirstOrDefaultAsync(x => x.Id == id);
-            if (Exist<T>.EntityIsNotExist(entity))
+            if (Exist<T, BaseDTO>.EntityIsNotExist(entity))
                 return default(T);
 
             return entity;
         }
         public async Task<IQueryable<Note>> GetNotesByUserIdAsync(int userId)
         {
-            if (Exist<T>.DataBaseIsNotExist(_context))
+            if (Exist<T, BaseDTO>.DataBaseIsNotExist(_context))
                 return default(IQueryable<Note>);
 
             return await Task.FromResult(_context.Set<Note>().Where(o => o.UserId == userId));
         }
         public async Task Update(T entity)
         {
-            if (Exist<T>.DataBaseIsNotExist(_context))
+            if (Exist<T, BaseDTO>.DataBaseIsNotExist(_context))
                 return;
 
             _context.Set<T>().Update(entity);
@@ -74,7 +75,7 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
         public async Task Delete(T entity)
         {
-            if (Exist<T>.DataBaseIsNotExist(_context))
+            if (Exist<T, BaseDTO>.DataBaseIsNotExist(_context))
                 return;
 
             _context.Set<T>().Remove(entity);

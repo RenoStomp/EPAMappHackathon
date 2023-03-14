@@ -1,4 +1,6 @@
-﻿using EPAMapp.Domain.Models.Entities;
+﻿using EPAMapp.Domain.Models.DTO.Common;
+using EPAMapp.Domain.Models.Entities;
+using EPAMapp.Services.DTO.Update;
 using EPAMapp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using YourProject.Services;
@@ -9,8 +11,8 @@ namespace EPAMapp.API.Controllers
     [ApiController]
     public class NoteController : ControllerBase
     {
-        private readonly IAsyncBaseService<Note> _services;
-        public NoteController(IAsyncBaseService<Note> services)
+        private readonly IAsyncBaseService<BaseDTO, Note> _services;
+        public NoteController(IAsyncBaseService<BaseDTO, Note> services)
         {
             _services = services;
         }
@@ -56,12 +58,12 @@ namespace EPAMapp.API.Controllers
 
         [HttpPost]
         public async Task Post(Note model)
-        {
+        {//TODO: CREATEDTONOTE
             await _services.Create(model);
         }
 
         [HttpPut]
-        public async Task Put(Note model)
+        public async Task Put(DTOUpdateNote model)
         {
             await _services.Update(model);
         }

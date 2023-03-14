@@ -1,4 +1,5 @@
 ﻿using EPAMapp.Domain.Models.Common;
+using EPAMapp.Domain.Models.DTO.Common;
 using EPAMapp.Domain.Models.Entities;
 
 namespace EPAMapp.DAL.Repositories.Interfaces;

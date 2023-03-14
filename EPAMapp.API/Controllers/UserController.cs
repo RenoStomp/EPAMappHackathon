@@ -1,4 +1,6 @@
-﻿using EPAMapp.Domain.Models.Entities;
+﻿using EPAMapp.Domain.Models.DTO.Common;
+using EPAMapp.Domain.Models.Entities;
+using EPAMapp.Services.DTO.Update;
 using EPAMapp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,8 +10,8 @@ namespace EPAMapp.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IAsyncBaseService<User> _services;
-        public UserController(IAsyncBaseService<User> services)
+        private readonly IAsyncBaseService<BaseDTO, User> _services;
+        public UserController(IAsyncBaseService<BaseDTO, User> services)
         {
             _services = services;
         }
@@ -29,12 +31,12 @@ namespace EPAMapp.API.Controllers
 
         [HttpPost]
         public async Task Post(User model)
-        {
+        {//TODO: DTOCREATE
             await _services.Create(model);
         }
 
         [HttpPut]
-        public async Task Put(User model)
+        public async Task Put(DTOUpdateUser model)
         {
             await _services.Update(model);
         }

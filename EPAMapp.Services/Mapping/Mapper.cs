@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EPAMapp.Domain.Models.Common;
+using EPAMapp.Domain.Models.DTO.Common;
 using EPAMapp.Services.DTO.Update;
 using EPAMapp.Services.Mapping;
 
@@ -7,7 +8,7 @@ namespace EPAMapp.Services.Update
 {
     public class Mapper<T, TModel>
         where T : BaseEntity
-        where TModel : BaseEntity
+        where TModel : BaseDTO
     {
         private readonly IMapper _mapper;
 
@@ -15,7 +16,7 @@ namespace EPAMapp.Services.Update
         {
             var mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new MappingProfile());
+                mc.AddProfile(new UpdateMappingProfile());
             });
 
             _mapper = mappingConfig.CreateMapper();
