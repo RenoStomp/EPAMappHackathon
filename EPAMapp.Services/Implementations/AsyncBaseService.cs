@@ -7,6 +7,7 @@ using EPAMapp.Domain.Models.Response;
 using EPAMapp.Services.DTO.Update;
 using EPAMapp.Services.Interfaces;
 using EPAMapp.Services.Update;
+using Microsoft.EntityFrameworkCore;
 
 namespace EPAMapp.Services.Implementations
 {
@@ -44,6 +45,26 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var entities = _repository.Get().ToList();
+                if (Exist<T>.EntityIsNoExist(entities)) return new BaseResponse<List<T>>()
+                {
+                    Description = "Entities not found"
+                };
+
+                return new BaseResponse<List<T>>()
+                {
+                    Data = entities
+                };
+            }
+            catch (Exception e)
+            {
+                return new BaseResponse<List<T>>() { Description = e.Message };
+            }
+        }
+        public async Task<IBaseResponse<List<T>>> GetAllAsync()
+        {
+            try
+            {
+                var entities = await _repository.Get().ToListAsync();
                 if (Exist<T>.EntityIsNoExist(entities)) return new BaseResponse<List<T>>()
                 {
                     Description = "Entities not found"

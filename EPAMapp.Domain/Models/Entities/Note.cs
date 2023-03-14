@@ -2,7 +2,7 @@
 
 namespace EPAMapp.Domain.Models.Entities
 {
-    public class Note : BaseEntity
+    public class Note : BaseNote
     {
         public string PastReport { get; set; }
         public string CurrentReport { get; set; }

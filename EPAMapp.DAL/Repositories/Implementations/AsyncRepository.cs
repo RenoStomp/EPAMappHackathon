@@ -17,7 +17,8 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
         public async Task Create(T entity)
         {
-            if (Exist<T>.DataBaseIsNotExist(_context)) return;
+            if (Exist<T>.DataBaseIsNotExist(_context)) 
+                return;
 
             await _context.Set<T>().AddAsync(entity);
             await _context.SaveChangesAsync();
@@ -25,10 +26,19 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
         public IQueryable<T> Get()
         {
-            if(Exist<T>.DataBaseIsNotExist(_context)) return default(IQueryable<T>);
+            if(Exist<T>.DataBaseIsNotExist(_context)) 
+                return default(IQueryable<T>);
 
             return _context.Set<T>();
         }
+        public async Task<IQueryable<T>> GetAsync()
+        {
+            if (Exist<T>.DataBaseIsNotExist(_context)) 
+                return default(IQueryable<T>);
+
+            return await Task.FromResult(_context.Set<T>());
+        }
+
         public T GetById(int id)
         {
             var entity = Get().FirstOrDefault(x => x.Id == id);
@@ -48,7 +58,8 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
         public async Task Update(T entity)
         {
-            if (Exist<T>.DataBaseIsNotExist(_context)) return;
+            if (Exist<T>.DataBaseIsNotExist(_context)) 
+                return;
 
             _context.Set<T>().Update(entity);
             await _context.SaveChangesAsync();
@@ -56,10 +67,13 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
         public async Task Delete(T entity)
         {
-            if (Exist<T>.DataBaseIsNotExist(_context)) return;
+            if (Exist<T>.DataBaseIsNotExist(_context)) 
+                return;
 
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
         }
+
+  
     }
 }

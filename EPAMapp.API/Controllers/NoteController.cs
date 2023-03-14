@@ -1,4 +1,5 @@
-﻿using EPAMapp.Domain.Models.Entities;
+﻿using Azure;
+using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,11 +34,25 @@ namespace EPAMapp.API.Controllers
         [HttpGet]
         [Route("export-to-excel")]
         public IActionResult ExportToExcel()
-        {
+        {6
             var response = _services.GetAll();
             if (response.Data == null) return NotFound(response);
             var excelBytes = ExcelService.ExportToExcel(response.Data);
-            return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MyEntities.xlsx");
+            return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MyNotes.xlsx");
+        }
+
+
+        [HttpGet("last-week-report")]
+        public async Task<IActionResult> GetLastWeekNote()
+        {
+            DateTime lastWeekDate = DateTime.Today.AddDays(-7);
+            var response = await _services.GetAllAsync();
+            if (response.Data == null) return NotFound();
+
+            var notes = response.Data.Where(n => n.CreatedAt >= lastWeekDate && n.CreatedAt < DateTime.Today && n.CurrentReport != null).ToList();
+
+            return Ok(notes);
+
         }
 
         [HttpPost]
