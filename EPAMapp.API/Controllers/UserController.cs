@@ -1,6 +1,5 @@
 ﻿using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EPAMapp.API.Controllers
@@ -22,9 +21,9 @@ namespace EPAMapp.API.Controllers
             return Results.Ok(response.Data);
         }
         [HttpGet("{id}")]
-        public  IResult Get(int id)
+        public IResult Get(int id)
         {
-            var response =  _services.GetModelById(id);
+            var response = _services.GetModelById(id);
             return Results.Ok(response.Data);
         }
 
@@ -34,8 +33,8 @@ namespace EPAMapp.API.Controllers
             await _services.Create(model);
         }
 
-        [HttpPut("{id}")]
-        public async Task Put( User model) 
+        [HttpPut]
+        public async Task Put(User model)
         {
             await _services.Update(model);
         }

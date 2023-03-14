@@ -1,9 +1,6 @@
-﻿using Azure;
-using EPAMapp.Domain.Models.Entities;
+﻿using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using YourProject.Services;
 
 namespace EPAMapp.API.Controllers
@@ -44,10 +41,10 @@ namespace EPAMapp.API.Controllers
         [HttpGet]
         [Route("{id}/LastWeekReport")]
 
-        public async Task<IActionResult> GetLastWeekNote()
+        public async Task<IActionResult> GetLastWeekNotes()
         {
             DateTime lastWeekDate = DateTime.Today.AddDays(-7);
-            
+
             var response = await _services.GetAllAsync();
             if (response.Data == null) return NotFound();
             var notes = response.Data.Where(n =>
@@ -63,7 +60,7 @@ namespace EPAMapp.API.Controllers
             await _services.Create(model);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task Put(Note model)
         {
             await _services.Update(model);

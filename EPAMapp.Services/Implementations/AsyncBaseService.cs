@@ -133,14 +133,8 @@ namespace EPAMapp.Services.Implementations
                         Description = "Entity to be updated was not found"
                     };
                 }
-                //else
-                //    return new BaseResponse<T>
-                //    {
-                //        Description = "Entity type not supported for update"
-                //    };
 
                 Mapper<BaseEntity, T> mapper = new();
-
                 entity = mapper.Map(model) as T;
 
                 await _repository.Update(entity);

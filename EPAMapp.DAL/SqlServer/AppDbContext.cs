@@ -44,7 +44,7 @@ namespace EPAMapp.DAL.SqlServer
                 .HasOne(order => order.User)
                 .WithMany(client => client.Notes)
                 .HasForeignKey(order => order.UserId)
-                /*.OnDelete(DeleteBehavior.Cascade)*/;
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
