@@ -9,7 +9,7 @@ namespace EPAMapp.DAL.Repositories.Implementations
     public class AsyncRepository<T> : IAsyncRepository<T>
         where T : BaseEntity
     {
-        private readonly AppDbContext _context;
+        protected readonly AppDbContext _context;
         public AsyncRepository(AppDbContext context)
         {
             _context = context;
