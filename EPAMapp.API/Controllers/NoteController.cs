@@ -33,11 +33,12 @@ namespace EPAMapp.API.Controllers
 
         [HttpGet]
         [Route("export-to-excel")]
-        public IActionResult ExportToExcel()
+        public async Task<IActionResult> ExportToExcel()
         {
-            var response = _services.GetAll();
+            var response = await _services.GetAllAsync();
             if (response.Data == null) return NotFound(response);
             var excelBytes = ExcelService.ExportToExcel(response.Data);
+
             return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MyNotes.xlsx");
         }
 
@@ -48,8 +49,9 @@ namespace EPAMapp.API.Controllers
             DateTime lastWeekDate = DateTime.Today.AddDays(-7);
             var response = await _services.GetAllAsync();
             if (response.Data == null) return NotFound();
-
-            var notes = response.Data.Where(n => n.CreatedAt >= lastWeekDate && n.CreatedAt < DateTime.Today && n.CurrentReport != null).ToList();
+            var notes = response.Data.Where(n =>
+                n.CreatedAt >= lastWeekDate && n.CreatedAt < DateTime.Today && n.CurrentReport != null)
+                .ToList();
 
             return Ok(notes);
 

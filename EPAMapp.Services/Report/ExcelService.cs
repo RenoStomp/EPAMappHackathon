@@ -15,14 +15,12 @@ namespace YourProject.Services
             {
                 var workSheet = package.Workbook.Worksheets.Add("Sheet1");
 
-                // Добавление заголовков столбцов
                 var properties = typeof(TEntity).GetProperties();
                 for (int i = 0; i < properties.Length; i++)
                 {
                     workSheet.Cells[1, i + 1].Value = properties[i].Name;
                 }
 
-                // Добавление строк с данными
                 var rows = data.ToList();
                 for (int i = 0; i < rows.Count; i++)
                 {
