@@ -116,16 +116,7 @@ namespace EPAMapp.Services.Implementations
                 }
 
                 Mapper<BaseEntity, T> mapper = new();
-
                 entity = mapper.Map(model) as T;
-
-
-                //else
-                //    return new BaseResponse<T>
-                //    {
-                //        Description = "Entity type not supported for update"
-                //    };
-
 
                 await _repository.Update(entity);
                 return new BaseResponse<T>()

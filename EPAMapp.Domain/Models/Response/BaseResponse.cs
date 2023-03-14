@@ -1,10 +1,8 @@
-﻿
-using EPAMapp.Domain.Models.Common;
-using EPAMapp.Domain.Models.Interfaces;
+﻿using EPAMapp.Domain.Models.Interfaces;
 
 namespace EPAMapp.Domain.Models.Response
 {
-    public class BaseResponse<T> : IBaseResponse<T> 
+    public class BaseResponse<T> : IBaseResponse<T>
     {
         public string Description { get; set; }
 
