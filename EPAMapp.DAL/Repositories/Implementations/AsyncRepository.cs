@@ -2,6 +2,7 @@
 using EPAMapp.DAL.Repositories.Interfaces;
 using EPAMapp.DAL.SqlServer;
 using EPAMapp.Domain.Models.Common;
+using EPAMapp.Domain.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EPAMapp.DAL.Repositories.Implementations
@@ -9,7 +10,7 @@ namespace EPAMapp.DAL.Repositories.Implementations
     public class AsyncRepository<T> : IAsyncRepository<T>
         where T : BaseEntity
     {
-        protected readonly AppDbContext _context;
+        private readonly AppDbContext _context;
         public AsyncRepository(AppDbContext context)
         {
             _context = context;
@@ -73,7 +74,13 @@ namespace EPAMapp.DAL.Repositories.Implementations
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
         }
+        public async Task<IQueryable<Note>> GetNotesByUserId(int userId)
+        {
+            if (Exist<T>.DataBaseIsNotExist(_context))
+                return default(IQueryable<Note>);
 
-  
+            return await Task.FromResult(_context.Set<Note>().Where(o => o.UserId == userId));
+        }
+
     }
 }
