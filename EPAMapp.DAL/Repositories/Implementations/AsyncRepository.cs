@@ -56,7 +56,13 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
             return entity;
         }
+        public async Task<IQueryable<Note>> GetNotesByUserIdAsync(int userId)
+        {
+            if (Exist<T>.DataBaseIsNotExist(_context))
+                return default(IQueryable<Note>);
 
+            return await Task.FromResult(_context.Set<Note>().Where(o => o.UserId == userId));
+        }
         public async Task Update(T entity)
         {
             if (Exist<T>.DataBaseIsNotExist(_context)) 
@@ -74,13 +80,5 @@ namespace EPAMapp.DAL.Repositories.Implementations
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
         }
-        public async Task<IQueryable<Note>> GetNotesByUserId(int userId)
-        {
-            if (Exist<T>.DataBaseIsNotExist(_context))
-                return default(IQueryable<Note>);
-
-            return await Task.FromResult(_context.Set<Note>().Where(o => o.UserId == userId));
-        }
-
     }
 }

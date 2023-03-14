@@ -1,4 +1,5 @@
 ﻿using EPAMapp.Domain.Models.Common;
+using EPAMapp.Domain.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EPAMapp.DAL.DataBaseExists

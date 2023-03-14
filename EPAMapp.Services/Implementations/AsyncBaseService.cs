@@ -63,7 +63,7 @@ namespace EPAMapp.Services.Implementations
         {
             try
             {
-                var entities = await _repository.Get().ToListAsync();
+                var entities = await _repository.GetAsync().Result.ToListAsync();
                 if (Exist<T>.EntityIsNoExist(entities)) return new BaseResponse<List<T>>()
                 {
                     Description = "Entities not found"
@@ -95,10 +95,29 @@ namespace EPAMapp.Services.Implementations
                     Data = entity
                 };
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                return new BaseResponse<T>() { Description = e.Message };
+            }
+        }
+        public async Task<IBaseResponse<T>> GetNotesModelsByUserIdAsync(int id)
+        {
+            try
+            {
+                
+                var entities = await _repository.GetNotesByUserIdAsync(id).Result.ToListAsync();
+                if (Exist<T>.EntityIsNotExist(entities as T)) return new BaseResponse<T>()
+                {
+                    Description = "Entity not found"
+                };
+                return new BaseResponse<T>()
+                {
+                    Data = entities as T
+                };
+            }
+            catch (Exception e)
+            {
+                return new BaseResponse<T>() { Description = e.Message };
             }
         }
 
@@ -114,18 +133,15 @@ namespace EPAMapp.Services.Implementations
                         Description = "Entity to be updated was not found"
                     };
                 }
-
-                Mapper<BaseEntity, T> mapper = new();
-
-                entity = mapper.Map(model) as T;
-
-
                 //else
                 //    return new BaseResponse<T>
                 //    {
                 //        Description = "Entity type not supported for update"
                 //    };
 
+                Mapper<BaseEntity, T> mapper = new();
+
+                entity = mapper.Map(model) as T;
 
                 await _repository.Update(entity);
                 return new BaseResponse<T>()
