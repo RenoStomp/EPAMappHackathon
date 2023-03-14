@@ -41,9 +41,9 @@ namespace EPAMapp.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task Delete(User model)
+        public async Task Delete(int id)
         {
-            await _services.Delete(model);
+            await _services.DeleteById(id);
         }
     }
 }

@@ -164,5 +164,11 @@ namespace EPAMapp.Services.Implementations
                 return new BaseResponse<T>() { Description = e.Message };
             }
         }
+
+        public  async Task DeleteById(int id)
+        {
+            var entity = await _repository.GetByIdAsync(id);
+            await Delete(entity);
+        }
     }
 }

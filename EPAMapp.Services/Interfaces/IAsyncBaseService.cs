@@ -10,7 +10,8 @@ namespace EPAMapp.Services.Interfaces
        public Task<IBaseResponse<List<T>>> GetAllAsync();   //R - Read all async
        public IBaseResponse<T> GetModelById(int id);        //R - Read one
        public Task<IBaseResponse<T>> Update(T model);       //U - Update
-       public Task<IBaseResponse<T>> Delete( T model);      //D - Delete
+       public Task<IBaseResponse<T>> Delete( T model);      //D - Delete one
+       public Task DeleteById(int id);                      //D - Delete one by id
 
     }
 }
