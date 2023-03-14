@@ -1,17 +1,16 @@
 ﻿using EPAMapp.DAL.DataBaseExists;
 using EPAMapp.DAL.Repositories.Interfaces;
 using EPAMapp.Domain.Models.Common;
-using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Domain.Models.Interfaces;
 using EPAMapp.Domain.Models.Response;
-using EPAMapp.Services.DTO.Update;
 using EPAMapp.Services.Interfaces;
 using EPAMapp.Services.Update;
 using Microsoft.EntityFrameworkCore;
 
 namespace EPAMapp.Services.Implementations
 {
-    public class AsyncBaseService<T> : IAsyncBaseService<T> where T : BaseEntity
+    public class AsyncBaseService<T> : IAsyncBaseService<T> 
+        where T : BaseEntity
     {
         private readonly IAsyncRepository<T> _repository;
 
@@ -116,21 +115,17 @@ namespace EPAMapp.Services.Implementations
                     };
                 }
 
-                if (entity is User user && model is DTOUpdateUser userModel)
-                    await UpdateUser.Update(user, userModel);
-                
-                else if (entity is Note note && model is DTOUpdateNote noteModel)
-                    await UpdateNote.Update(note, noteModel);
-                
-                else if (entity is Admin admin && model is DTOUpdateAdmin adminModel)
-                    await UpdateAdmin.Update(admin, adminModel);
+                Mapper<BaseEntity, T> mapper = new();
 
-                else
-                    return new BaseResponse<T>
-                    {
-                        Description = "Entity type not supported for update"
-                    };
-                
+                entity = mapper.Map(model) as T;
+
+
+                //else
+                //    return new BaseResponse<T>
+                //    {
+                //        Description = "Entity type not supported for update"
+                //    };
+
 
                 await _repository.Update(entity);
                 return new BaseResponse<T>()
