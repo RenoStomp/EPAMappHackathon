@@ -34,7 +34,7 @@ namespace EPAMapp.API.Controllers
         [HttpGet]
         [Route("export-to-excel")]
         public IActionResult ExportToExcel()
-        {6
+        {
             var response = _services.GetAll();
             if (response.Data == null) return NotFound(response);
             var excelBytes = ExcelService.ExportToExcel(response.Data);
