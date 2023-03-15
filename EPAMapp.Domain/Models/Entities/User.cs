@@ -4,6 +4,6 @@ namespace EPAMapp.Domain.Models.Entities
 {
     public class User : AccountHolder
     {
-        public List<Note> Notes { get; set; }
+        public List<Note> Notes = new List<Note>();
     }
 }

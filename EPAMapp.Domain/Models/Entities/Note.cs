@@ -8,6 +8,6 @@ namespace EPAMapp.Domain.Models.Entities
         public string CurrentReport { get; set; }
         public string NextReport { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User User = new User();
     }
 }

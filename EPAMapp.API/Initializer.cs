@@ -1,5 +1,6 @@
 ﻿using EPAMapp.DAL.Repositories.Implementations;
 using EPAMapp.DAL.Repositories.Interfaces;
+using EPAMapp.Domain.Models.Common;
 using EPAMapp.Domain.Models.DTO.Common;
 using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Services.Implementations;
@@ -11,9 +12,9 @@ namespace EPAMapp.API
     {
         public static void InitializeRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IAsyncRepository<User>, AsyncRepository<User>>();
-            services.AddScoped<IAsyncRepository<Note>, AsyncRepository<Note>>();
-            services.AddScoped<IAsyncRepository<Admin>, AsyncRepository<Admin>>();
+            services.AddScoped<IAsyncRepository<User>, AsyncRepository<User, AccountHolder>>();
+            services.AddScoped<IAsyncRepository<Note>, AsyncRepository<Note, AccountHolder>>();
+            services.AddScoped<IAsyncRepository<Admin>, AsyncRepository<Admin, AccountHolder>>();
         }
         public static void InitializeServeces(this IServiceCollection services)
         {
