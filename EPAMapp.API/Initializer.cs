@@ -16,7 +16,7 @@ namespace EPAMapp.API
             services.AddScoped<IAsyncRepository<Note>, AsyncRepository<Note, AccountHolder>>();
             services.AddScoped<IAsyncRepository<Admin>, AsyncRepository<Admin, AccountHolder>>();
         }
-        public static void InitializeServeces(this IServiceCollection services)
+        public static void InitializeServices(this IServiceCollection services)
         {
             services.AddScoped<IAsyncBaseService<BaseDTO, User>, AsyncBaseService<BaseDTO, User>>();
             services.AddScoped<IAsyncBaseService<BaseDTO, Note>, AsyncBaseService<BaseDTO, Note>>();
