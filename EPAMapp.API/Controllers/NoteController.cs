@@ -1,4 +1,5 @@
 ﻿using EPAMapp.Domain.Models.DTO.Common;
+using EPAMapp.Domain.Models.DTO.Create;
 using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Services.DTO.Update;
 using EPAMapp.Services.Interfaces;
@@ -57,8 +58,8 @@ namespace EPAMapp.API.Controllers
         }
 
         [HttpPost]
-        public async Task Post(Note model)
-        {//TODO: CREATEDTONOTE
+        public async Task Post(DTOCreateNote model)
+        {
             await _services.Create(model);
         }
 

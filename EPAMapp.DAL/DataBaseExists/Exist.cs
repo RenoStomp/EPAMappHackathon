@@ -1,13 +1,11 @@
 ﻿using EPAMapp.Domain.Models.Common;
-using EPAMapp.Domain.Models.DTO.Common;
-using EPAMapp.Domain.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EPAMapp.DAL.DataBaseExists
 {
-    public static class Exist<T, Tmodel> 
+    public static class Exist<T, Tmodel>
         where T : BaseEntity
-        where Tmodel : BaseDTO
+        where Tmodel : class
     {
         public static bool DataBaseIsNotExist(DbContext context)
         {
@@ -30,14 +28,14 @@ namespace EPAMapp.DAL.DataBaseExists
 
             return false;
         }
-        public static bool EntityIsNoExist(List<T> entities)
+        public static bool EntityIsNotExist(List<T> entities)
         {
             if (entities == null || !entities.Any())
                 return true;
 
             return false;
         }
-        public static bool EntityIsNoExist(List<Tmodel> entities)
+        public static bool EntityIsNotExist(List<Tmodel> entities)
         {
             if (entities == null || !entities.Any())
                 return true;

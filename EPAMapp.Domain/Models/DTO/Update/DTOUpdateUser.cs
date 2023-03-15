@@ -1,9 +1,8 @@
-﻿using EPAMapp.Domain.Models.Common;
-using EPAMapp.Domain.Models.DTO.Common;
+﻿using EPAMapp.Domain.Models.DTO.Common;
 
 namespace EPAMapp.Services.DTO.Update
 {
-    public class DTOUpdateUser : BaseDTO
+    public class DTOUpdateUser : DTOUpdateBase
     {
         public string Name { get; set; }
         public string Surname { get; set; }

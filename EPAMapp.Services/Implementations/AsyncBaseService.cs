@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EPAMapp.Services.Implementations
 {
-    public class AsyncBaseService<T, Tmodel> : IAsyncBaseService<T, Tmodel> 
+    public class AsyncBaseService<T, Tmodel> : IAsyncBaseService<T, Tmodel>
         where T : BaseDTO
         where Tmodel : BaseEntity
     {
@@ -20,16 +20,20 @@ namespace EPAMapp.Services.Implementations
         {
             _repository = repository;
         }
-        //TODO: create DTOCREATE
+
         public async Task<IBaseResponse<Tmodel>> Create(T model)
-        {//TODO: Map DTOCREATE on BaseEntity
+        {
             try
             {
                 if (Exist<Tmodel, T>.EntityIsNotExist(model)) return new BaseResponse<Tmodel>()
                 {
                     Description = "Created entity not found"
                 };
-                await _repository.Create(model);
+
+                Mapper<Tmodel, T> mapper = new();
+                Tmodel entity = mapper.Map(model);
+
+                await _repository.Create(entity);
                 return new BaseResponse<Tmodel>()
                 {
                     Data = model as Tmodel
@@ -46,7 +50,7 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var entities = _repository.Get().ToList();
-                if (Exist<Tmodel, T>.EntityIsNoExist(entities)) return new BaseResponse<List<Tmodel>>()
+                if (Exist<Tmodel, T>.EntityIsNotExist(entities)) return new BaseResponse<List<Tmodel>>()
                 {
                     Description = "Entities not found"
                 };
@@ -66,7 +70,7 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var entities = await _repository.GetAsync().Result.ToListAsync();
-                if (Exist<Tmodel, T>.EntityIsNoExist(entities)) return new BaseResponse<List<Tmodel>>()
+                if (Exist<Tmodel, T>.EntityIsNotExist(entities)) return new BaseResponse<List<Tmodel>>()
                 {
                     Description = "Entities not found"
                 };
@@ -106,7 +110,7 @@ namespace EPAMapp.Services.Implementations
         {
             try
             {
-                
+
                 var entities = await _repository.GetNotesByUserIdAsync(id).Result.ToListAsync();
                 if (Exist<Tmodel, T>.EntityIsNotExist(entities as T)) return new BaseResponse<Tmodel>()
                 {
@@ -127,7 +131,7 @@ namespace EPAMapp.Services.Implementations
         {
             try
             {
-                var entity = await _repository.GetByIdAsync(model.Id);
+                var entity = await _repository.GetByIdAsync((model as DTOUpdateBase).Id);
                 if (Exist<Tmodel, T>.EntityIsNotExist(entity as T))
                 {
                     return new BaseResponse<Tmodel>
@@ -137,7 +141,7 @@ namespace EPAMapp.Services.Implementations
                 }
 
                 Mapper<Tmodel, T> mapper = new();
-                entity = mapper.Map(model) as Tmodel;
+                entity = mapper.Map(model);
 
                 await _repository.Update(entity);
                 return new BaseResponse<Tmodel>()
@@ -172,7 +176,7 @@ namespace EPAMapp.Services.Implementations
             }
         }
 
-        public  async Task DeleteById(int id)
+        public async Task DeleteById(int id)
         {
             var entity = await _repository.GetByIdAsync(id);
             await Delete(entity as T);

@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
 using EPAMapp.Domain.Models.Common;
 using EPAMapp.Domain.Models.DTO.Common;
+using EPAMapp.Domain.Models.DTO.Create;
 using EPAMapp.Services.DTO.Update;
 using EPAMapp.Services.Mapping;
 
 namespace EPAMapp.Services.Update
 {
-    public class Mapper<T, TModel>
+    public class UpdateMapper<T, TModel>
         where T : BaseEntity
-        where TModel : BaseDTO
+        where TModel : DTOUpdateBase
     {
         private readonly IMapper _mapper;
 
-        public Mapper()
+        public UpdateMapper()
         {
-            var mappingConfig = new MapperConfiguration(mc =>
+            MapperConfiguration mappingConfig = new(mc =>
             {
                 mc.AddProfile(new UpdateMappingProfile());
             });
@@ -26,9 +27,10 @@ namespace EPAMapp.Services.Update
         {
             return model switch
             {
-                DTOUpdateUser userModel => MapperHelper.MapDtoUserToUser(userModel, _mapper) as T,
-                DTOUpdateAdmin adminModel => MapperHelper.MapDtoAdminToAdmin(adminModel, _mapper) as T,
-                DTOUpdateNote noteModel => MapperHelper.MapDtoNoteToNote(noteModel, _mapper) as T,
+                DTOUpdateUser userModel => UpdateMapperHelper.MapDtoUserToUser(userModel, _mapper) as T,
+                DTOUpdateAdmin adminModel => UpdateMapperHelper.MapDtoAdminToAdmin(adminModel, _mapper) as T,
+                DTOUpdateNote noteModel => UpdateMapperHelper.MapDtoNoteToNote(noteModel, _mapper) as T,
+
                 _ => default(T)
             };
         }

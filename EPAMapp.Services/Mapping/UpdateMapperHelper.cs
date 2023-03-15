@@ -4,7 +4,7 @@ using EPAMapp.Services.DTO.Update;
 
 namespace EPAMapp.Services.Mapping
 {
-    public static class MapperHelper
+    public static class UpdateMapperHelper
     {
         public static Admin MapDtoAdminToAdmin(DTOUpdateAdmin dtoUpdateAdmin, IMapper mapper)
         {

@@ -1,4 +1,5 @@
 ﻿using EPAMapp.Domain.Models.DTO.Common;
+using EPAMapp.Domain.Models.DTO.Create;
 using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Services.DTO.Update;
 using EPAMapp.Services.Interfaces;
@@ -30,8 +31,8 @@ namespace EPAMapp.API.Controllers
         }
 
         [HttpPost]
-        public async Task Post(User model)
-        {//TODO: DTOCREATE
+        public async Task Post(DTOCreateUser model)
+        {
             await _services.Create(model);
         }
 
