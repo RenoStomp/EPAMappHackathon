@@ -30,7 +30,7 @@ namespace EPAMapp.Services.Implementations
         {
             try
             {
-                var existingUser = await _repositoryLogin.GetByMailAsync(model.Email);
+                var existingUser = await _repositoryLogin.GetByEmailAsync(model.Email);
                 if (Exist<BaseEntity, BaseDTO, H>.EntityIsNotExist(existingUser)) return new BaseResponse<H>()
                 {
                     Description = "Пользователь с таким email уже зарегистрирован."
@@ -61,7 +61,7 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 // Получаем пользователя из базы данных по email
-                var user = await _repositoryLogin.GetByMailAsync(model.Email);
+                var user = await _repositoryLogin.GetByEmailAsync(model.Email);
                 if (Exist<BaseEntity, BaseDTO, H>.EntityIsNotExist(user)) return new BaseResponse<H>()
                 {
                     Description = "Пользователь с таким email уже зарегистрирован."

@@ -58,7 +58,7 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
             return entity;
         }
-        public async Task<IQueryable<H>> GetAllByMailAsync(string email)
+        public async Task<IQueryable<H>> GetAllByEmailAsync(string email)
         {
             if (Exist<T, BaseDTO, H>.DataBaseIsNotExist(_context))
                 return default(IQueryable<H>);
@@ -68,7 +68,7 @@ namespace EPAMapp.DAL.Repositories.Implementations
         }
         public async Task<H> GetByEmailAsync(string email)
         {
-            var entity = await GetAllByMailAsync(email).Result.FirstOrDefaultAsync(u => u.Email == email);
+            var entity = await GetAllByEmailAsync(email).Result.FirstOrDefaultAsync(u => u.Email == email);
             if (Exist<T, BaseDTO, H>.EntityIsNotExist(entity))
                 return default(H);
 

@@ -6,7 +6,7 @@ namespace EPAMapp.DAL.Repositories.Interfaces
     {
 
         public Task<IQueryable<H>> GetAllByEmailAsync(string email);    // R - Read one by mail async
-        public Task<H> GetByMailAsync(string email);  // R - Read all by mail async
+        public Task<H> GetByEmailAsync(string email);                   // R - Read all by mail async
 
     }
 }
