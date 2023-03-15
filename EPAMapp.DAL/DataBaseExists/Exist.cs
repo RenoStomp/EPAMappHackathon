@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EPAMapp.DAL.DataBaseExists
 {
-    public static class Exist<T, Tmodel>
+    public static class Exist<T, Tmodel, H>
         where T : BaseEntity
         where Tmodel : class
+        where H : AccountHolder
     {
         public static bool DataBaseIsNotExist(DbContext context)
         {
@@ -28,6 +29,13 @@ namespace EPAMapp.DAL.DataBaseExists
 
             return false;
         }
+        public static bool EntityIsNotExist(H entity)
+        {
+            if (entity == null)
+                return true;
+
+            return false;
+        }
         public static bool EntityIsNotExist(List<T> entities)
         {
             if (entities == null || !entities.Any())
@@ -36,6 +44,13 @@ namespace EPAMapp.DAL.DataBaseExists
             return false;
         }
         public static bool EntityIsNotExist(List<Tmodel> entities)
+        {
+            if (entities == null || !entities.Any())
+                return true;
+
+            return false;
+        }
+        public static bool EntityIsNotExist(List<H> entities)
         {
             if (entities == null || !entities.Any())
                 return true;
