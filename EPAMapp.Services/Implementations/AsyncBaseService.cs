@@ -27,7 +27,7 @@ namespace EPAMapp.Services.Implementations
         {
             try
             {
-                if (Exist<Tmodel, T>.EntityIsNotExist(model)) return new BaseResponse<Tmodel>()
+                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(model)) return new BaseResponse<Tmodel>()
                 {
                     Description = "Created entity not found"
                 };
@@ -96,7 +96,7 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var entities = _repository.Get().ToList();
-                if (Exist<Tmodel, T>.EntityIsNotExist(entities)) return new BaseResponse<List<Tmodel>>()
+                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entities)) return new BaseResponse<List<Tmodel>>()
                 {
                     Description = "Entities not found"
                 };
@@ -116,7 +116,7 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var entities = await _repository.GetAsync().Result.ToListAsync();
-                if (Exist<Tmodel, T>.EntityIsNotExist(entities)) return new BaseResponse<List<Tmodel>>()
+                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entities)) return new BaseResponse<List<Tmodel>>()
                 {
                     Description = "Entities not found"
                 };
@@ -137,7 +137,7 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var entity = _repository.GetById(id);
-                if (Exist<Tmodel, T>.EntityIsNotExist(entity)) return new BaseResponse<Tmodel>()
+                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entity)) return new BaseResponse<Tmodel>()
                 {
                     Description = "Entity not found"
                 };
@@ -158,7 +158,7 @@ namespace EPAMapp.Services.Implementations
             {
 
                 var entities = await _repository.GetNotesByUserIdAsync(id).Result.ToListAsync();
-                if (Exist<Tmodel, T>.EntityIsNotExist(entities as T)) return new BaseResponse<Tmodel>()
+                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entities as T)) return new BaseResponse<Tmodel>()
                 {
                     Description = "Entity not found"
                 };
@@ -178,7 +178,7 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var entity = await _repository.GetByIdAsync((model as DTOUpdateBase).Id);
-                if (Exist<Tmodel, T>.EntityIsNotExist(entity))
+                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entity as T))
                 {
                     return new BaseResponse<Tmodel>
                     {
@@ -234,7 +234,7 @@ namespace EPAMapp.Services.Implementations
         {
             try
             {
-                if (Exist<Tmodel, T>.EntityIsNotExist(model)) return new BaseResponse<Tmodel>
+                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(model)) return new BaseResponse<Tmodel>
                 {
                     Description = "Entity to be deleted was not found "
                 };
