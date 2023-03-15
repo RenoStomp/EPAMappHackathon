@@ -45,7 +45,7 @@ namespace EPAMapp.API.Controllers
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
-            await _services.DeleteById(id);
+            await _services.Delete(id);
         }
     }
 }
