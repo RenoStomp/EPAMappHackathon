@@ -178,7 +178,7 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var entity = await _repository.GetByIdAsync((model as DTOUpdateBase).Id);
-                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entity as T))
+                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entity))
                 {
                     return new BaseResponse<Tmodel>
                     {

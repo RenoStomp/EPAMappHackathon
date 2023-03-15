@@ -41,17 +41,37 @@ namespace EPAMapp.API.Controllers
 
             return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MyNotes.xlsx", true);
         }
+
+
         [HttpGet]
         [Route("{id}/LastWeekReport")]
-
-        public async Task<IActionResult> GetLastWeekNotes()
+        public async Task<IActionResult> GetLastWeekNotes(int id)
         {
             DateTime lastWeekDate = DateTime.Today.AddDays(-7);
 
-            var response = await _services.GetAllAsync();
+            var response = await _services.GetNotesModelsByUserIdAsync(id);
+            if (response.Data == null)
+                return NotFound();
+
+            var notes = response.Data
+                .Where(n => n.CreatedAt >= lastWeekDate && n.CreatedAt < DateTime.Today && n.CurrentReport != null)
+                .OrderByDescending(n => n.CreatedAt)
+                .Take(1)
+                .ToList();
+
+            return Ok(notes);
+        }
+
+        [HttpGet]
+        [Route("{id}/LastWeekReport2")]
+        public async Task<IActionResult> GetLast7Notes(int id)
+        {
+            var response = await _services.GetNotesModelsByUserIdAsync(id);
             if (response.Data == null) return NotFound();
-            var notes = response.Data.Where(n =>
-                n.CreatedAt >= lastWeekDate && n.CreatedAt < DateTime.Today && n.CurrentReport != null)
+            var notes = response.Data
+                .Where(n => n.CurrentReport != null)
+                .OrderByDescending(n => n.CreatedAt)
+                .Take(7)
                 .ToList();
 
             return Ok(notes);
