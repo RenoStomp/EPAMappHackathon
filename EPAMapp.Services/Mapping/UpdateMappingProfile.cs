@@ -43,7 +43,10 @@ namespace EPAMapp.Services.Mapping
                 .ForMember(dest => dest.CurrentReport, opt => opt.MapFrom(src => src.CurrentReport))
                 .ForMember(dest => dest.NextReport, opt => opt.MapFrom(src => src.NextReport))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
-                .ForMember(dest => dest.User, opt => opt.Ignore());
+                .ForMember(dest => dest.User, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
+
+
         }
     }
 }

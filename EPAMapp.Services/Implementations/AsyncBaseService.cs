@@ -2,11 +2,12 @@
 using EPAMapp.DAL.Repositories.Interfaces;
 using EPAMapp.Domain.Models.Common;
 using EPAMapp.Domain.Models.DTO.Common;
+using EPAMapp.Domain.Models.DTO.Create;
+using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Domain.Models.Interfaces;
 using EPAMapp.Domain.Models.Response;
+using EPAMapp.Services.DTO.Update;
 using EPAMapp.Services.Interfaces;
-using EPAMapp.Services.Mapping;
-using EPAMapp.Services.Update;
 using Microsoft.EntityFrameworkCore;
 
 namespace EPAMapp.Services.Implementations
@@ -31,10 +32,54 @@ namespace EPAMapp.Services.Implementations
                     Description = "Created entity not found"
                 };
 
-                CreateMapper<Tmodel, DTOCreateBase> mapper = new();
-                Tmodel entity = mapper.Map(model as DTOCreateBase);
+                //CreateMapper<Tmodel, DTOCreateBase> mapper = new();
+                //Tmodel entity = mapper.Map(model as DTOCreateBase);
 
-                await _repository.Create(entity);
+                BaseEntity entity = new();
+                if (model is DTOCreateUser userModel)
+                {
+                    User user = new()
+                    {
+                        Name = userModel.Name,
+                        Surname = userModel.Surname,
+                        Email = userModel.Email,
+                        Password = userModel.Password
+                    };
+                    entity = user;
+                }
+                else if (model is DTOCreateNote noteModel)
+                {
+                    Note note = new()
+                    {
+                        PastReport = noteModel.PastReport,
+                        CurrentReport = noteModel.CurrentReport,
+                        NextReport = noteModel.NextReport,
+                        UserId = noteModel.UserId
+                    };
+                    entity = note;
+                }
+                else if (model is DTOCreateAdmin adminModel)
+                {
+                    Admin admin = new()
+                    {
+                        Name = adminModel.Name,
+                        Surname = adminModel.Surname,
+                        Email = adminModel.Email,
+                        Password = adminModel.Password,
+                        NickName = adminModel.NickName
+                    };
+                    entity = admin;
+                }
+                else
+                {
+                    return new BaseResponse<Tmodel>
+                    {
+                        Description = "Entity type not supported for update"
+                    };
+                }
+
+
+                await _repository.Create(entity as Tmodel);
                 return new BaseResponse<Tmodel>()
                 {
                     Data = model as Tmodel
@@ -133,7 +178,7 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var entity = await _repository.GetByIdAsync((model as DTOUpdateBase).Id);
-                if (Exist<Tmodel, T>.EntityIsNotExist(entity as T))
+                if (Exist<Tmodel, T>.EntityIsNotExist(entity))
                 {
                     return new BaseResponse<Tmodel>
                     {
@@ -141,9 +186,38 @@ namespace EPAMapp.Services.Implementations
                     };
                 }
 
-                UpdateMapper<Tmodel, DTOUpdateBase> mapper = new();
-                entity = mapper.Map(model as DTOUpdateBase);
+                //UpdateMapper<Tmodel, DTOUpdateBase> mapper = new();
+                //entity = mapper.Map(model as DTOUpdateBase);
 
+                if (entity is User user && model is DTOUpdateUser userModel)
+                {
+                    user.Name = userModel.Name;
+                    user.Surname = userModel.Surname;
+                    user.Email = userModel.Email;
+                    user.Password = userModel.Password;
+                }
+                else if (entity is Note note && model is DTOUpdateNote noteModel)
+                {
+                    note.NextReport = noteModel.NextReport;
+                    note.PastReport = noteModel.PastReport;
+                    note.CurrentReport = noteModel.CurrentReport;
+                    note.UserId = noteModel.UserId;
+                }
+                else if (entity is Admin admin && model is DTOUpdateAdmin adminModel)
+                {
+                    admin.Name = adminModel.Name;
+                    admin.Surname = adminModel.Surname;
+                    admin.Email = adminModel.Email;
+                    admin.Password = adminModel.Password;
+                    admin.NickName = adminModel.NickName;
+                }
+                else
+                {
+                    return new BaseResponse<Tmodel>
+                    {
+                        Description = "Entity type not supported for update"
+                    };
+                }
                 await _repository.Update(entity);
                 return new BaseResponse<Tmodel>()
                 {
