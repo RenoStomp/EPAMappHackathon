@@ -26,4 +26,8 @@
     <ProjectReference Include="..\EPAMapp.Domain\EPAMapp.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

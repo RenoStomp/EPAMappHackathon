@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EPAMapp.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230315065249_AnotherInit")]
-    partial class AnotherInit
+    [Migration("20230315134617_MINE")]
+    partial class MINE
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
