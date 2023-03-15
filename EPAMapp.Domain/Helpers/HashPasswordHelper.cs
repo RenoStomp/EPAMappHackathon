@@ -7,10 +7,10 @@ namespace EPAMapp.Domain.Helpers
     {
         public static string HashPassword(string password)
         {
-            using(var sha256 = SHA256.Create())
+            using (var sha256 = SHA256.Create())
             {
                 var hashhedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                var hash = BitConverter.ToString(hashhedBytes).Replace("-","").ToLower();
+                var hash = BitConverter.ToString(hashhedBytes).Replace("-", "").ToLower();
 
                 return hash;
             }
