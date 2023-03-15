@@ -33,13 +33,13 @@ namespace EPAMapp.API.Controllers
 
         [HttpGet]
         [Route("{id}/ExporToExcel")]
-        public async Task<IActionResult> ExportToExcel()
+        public async Task<IResult> ExportToExcel(int id)
         {
-            var response = await _services.GetAllAsync();
-            if (response.Data == null) return NotFound(response);
+            var response = await _services.GetNotesModelsByUserIdAsync(id);
+            if (response.Data == null) return Results.NotFound(response);
             var excelBytes = ExcelService.ExportToExcel(response.Data);
 
-            return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MyNotes.xlsx");
+            return Results.File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MyNotes.xlsx");
         }
         [HttpGet]
         [Route("{id}/LastWeekReport")]
