@@ -10,9 +10,10 @@ using EPAMapp.Services.Mapping;
 
 namespace EPAMapp.Services.Implementations
 {
-    public class AsyncLoginService<H, Tmodel> : IAsyncLoginService<H>
+    public class AsyncLoginService<H, Tmodel, T> : IAsyncLoginService<H, T>
         where H : AccountHolder
         where Tmodel : BaseEntity
+        where T : DTOAccountHolder
     {
         private readonly IAsyncLoginRepository<H> _repositoryLogin;
         private readonly IAsyncRepository<Tmodel> _repository;
@@ -24,7 +25,7 @@ namespace EPAMapp.Services.Implementations
             _repository = repository;
         }
 
-        public async Task<IBaseResponse<H>> Register(H model)
+        public async Task<IBaseResponse<H>> Register(T model)
         {
             try
             {
@@ -44,7 +45,7 @@ namespace EPAMapp.Services.Implementations
                 await _repository.Create(user);
                 return new BaseResponse<H>()
                 {
-                    Data = model
+                    Data = user as H
                 };
             }
             catch (Exception e)
@@ -56,7 +57,7 @@ namespace EPAMapp.Services.Implementations
 
         }
 
-        public async Task<IBaseResponse<H>> Login(H model)
+        public async Task<IBaseResponse<H>> Login(T model)
         {
             try
             {
