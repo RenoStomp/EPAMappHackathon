@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EPAMapp.DAL.Repositories.Implementations
 {
-    public class AsyncRepository<T,H> : IAsyncRepository<T>, IAsyncLoginRepository<H>
+    public class AsyncRepository<T, H> : IAsyncRepository<T>, IAsyncLoginRepository<H>
         where T : BaseEntity
         where H : AccountHolder
     {
@@ -108,6 +108,6 @@ namespace EPAMapp.DAL.Repositories.Implementations
             await Delete(entity);
         }
 
-     
+
     }
 }

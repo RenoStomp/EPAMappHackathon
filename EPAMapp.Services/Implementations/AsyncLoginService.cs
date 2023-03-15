@@ -3,18 +3,16 @@ using EPAMapp.DAL.Repositories.Interfaces;
 using EPAMapp.Domain.Helpers;
 using EPAMapp.Domain.Models.Common;
 using EPAMapp.Domain.Models.DTO.Common;
-using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Domain.Models.Interfaces;
 using EPAMapp.Domain.Models.Response;
 using EPAMapp.Services.Interfaces;
 using EPAMapp.Services.Mapping;
-using Microsoft.EntityFrameworkCore;
 
 namespace EPAMapp.Services.Implementations
 {
     public class AsyncLoginService<H, Tmodel> : IAsyncLoginService<H>
         where H : AccountHolder
-        where Tmodel : BaseEntity 
+        where Tmodel : BaseEntity
     {
         private readonly IAsyncLoginRepository<H> _repositoryLogin;
         private readonly IAsyncRepository<Tmodel> _repository;
@@ -25,7 +23,7 @@ namespace EPAMapp.Services.Implementations
             _repositoryLogin = repositoryLogin;
             _repository = repository;
         }
-      
+
         public async Task<IBaseResponse<H>> Register(H model)
         {
             try
@@ -34,7 +32,7 @@ namespace EPAMapp.Services.Implementations
                 if (Exist<BaseEntity, BaseDTO, H>.EntityIsNotExist(existingUser)) return new BaseResponse<H>()
                 {
                     Description = "Пользователь с таким email уже зарегистрирован."
-                 
+
                 };
 
                 model.Password = HashPasswordHelper.HashPassword(model.Password);

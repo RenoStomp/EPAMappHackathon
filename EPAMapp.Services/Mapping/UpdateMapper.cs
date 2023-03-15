@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using EPAMapp.Domain.Models.Common;
 using EPAMapp.Domain.Models.DTO.Common;
-using EPAMapp.Domain.Models.DTO.Create;
 using EPAMapp.Services.DTO.Update;
 using EPAMapp.Services.Mapping;
 

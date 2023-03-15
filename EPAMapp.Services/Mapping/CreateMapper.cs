@@ -2,7 +2,6 @@
 using EPAMapp.Domain.Models.Common;
 using EPAMapp.Domain.Models.DTO.Common;
 using EPAMapp.Domain.Models.DTO.Create;
-using EPAMapp.Services.DTO.Update;
 
 namespace EPAMapp.Services.Mapping
 {
