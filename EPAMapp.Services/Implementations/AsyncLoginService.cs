@@ -37,6 +37,8 @@ namespace EPAMapp.Services.Implementations
                  
                 };
 
+                model.Password = HashPasswordHelper.HashPassword(model.Password);
+
                 CreateMapper<Tmodel, DTOCreateBase> mapper = new();
                 Tmodel user = mapper.Map(model as DTOCreateBase);
 
