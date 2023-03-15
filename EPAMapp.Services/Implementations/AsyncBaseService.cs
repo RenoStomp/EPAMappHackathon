@@ -5,6 +5,7 @@ using EPAMapp.Domain.Models.DTO.Common;
 using EPAMapp.Domain.Models.Interfaces;
 using EPAMapp.Domain.Models.Response;
 using EPAMapp.Services.Interfaces;
+using EPAMapp.Services.Mapping;
 using EPAMapp.Services.Update;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,8 +31,8 @@ namespace EPAMapp.Services.Implementations
                     Description = "Created entity not found"
                 };
 
-                Mapper<Tmodel, T> mapper = new();
-                Tmodel entity = mapper.Map(model);
+                CreateMapper<Tmodel, DTOCreateBase> mapper = new();
+                Tmodel entity = mapper.Map(model as DTOCreateBase);
 
                 await _repository.Create(entity);
                 return new BaseResponse<Tmodel>()
@@ -140,8 +141,8 @@ namespace EPAMapp.Services.Implementations
                     };
                 }
 
-                Mapper<Tmodel, T> mapper = new();
-                entity = mapper.Map(model);
+                UpdateMapper<Tmodel, DTOUpdateBase> mapper = new();
+                entity = mapper.Map(model as DTOUpdateBase);
 
                 await _repository.Update(entity);
                 return new BaseResponse<Tmodel>()
@@ -179,7 +180,7 @@ namespace EPAMapp.Services.Implementations
         public async Task DeleteById(int id)
         {
             var entity = await _repository.GetByIdAsync(id);
-            await Delete(entity as T);
+            await Delete(entity);
         }
     }
 }
