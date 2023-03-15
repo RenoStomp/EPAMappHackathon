@@ -63,7 +63,7 @@ namespace EPAMapp.API.Controllers
             await _services.Create(model);
         }
 
-        [HttpPut]
+        [HttpPut] 
         public async Task Put(DTOUpdateNote model)
         {
             await _services.Update(model);

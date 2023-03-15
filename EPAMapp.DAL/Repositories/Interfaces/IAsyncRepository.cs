@@ -14,6 +14,6 @@ public interface IAsyncRepository<T>
     public Task<T> GetByIdAsync(int id);    // R - Read one async
     public Task<IQueryable<Note>> GetNotesByUserIdAsync(int userId); //R - Read notes by user id
     public Task Update(T Item);             // U - Update
-    public Task Delete(T item);             // D - Delete
-
+    public Task Delete(T item);             // D - Delete by model
+    public Task DeleteById(int id);         // D - Delete by id
 }

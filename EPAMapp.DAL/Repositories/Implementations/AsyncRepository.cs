@@ -51,7 +51,7 @@ namespace EPAMapp.DAL.Repositories.Implementations
         }
         public async Task<T> GetByIdAsync(int id)
         {
-            var entity = await Get().FirstOrDefaultAsync(x => x.Id == id);
+            var entity = await GetAsync().Result.FirstOrDefaultAsync(x => x.Id == id);
             if (Exist<T, BaseDTO>.EntityIsNotExist(entity))
                 return default(T);
 
@@ -80,6 +80,15 @@ namespace EPAMapp.DAL.Repositories.Implementations
 
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteById(int id)
+        {
+            if (Exist<T, BaseDTO>.DataBaseIsNotExist(_context))
+                return;
+
+            var entity = await GetByIdAsync(id);
+            await Delete(entity);
         }
     }
 }

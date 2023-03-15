@@ -14,8 +14,8 @@ namespace EPAMapp.Services.Interfaces
         public IBaseResponse<Tmodel> GetModelById(int id);        //R - Read one
         public Task<IBaseResponse<Tmodel>> GetNotesModelsByUserIdAsync(int id); // R - Read notes by user id
         public Task<IBaseResponse<Tmodel>> Update(T model);       //U - Update
-        public Task<IBaseResponse<Tmodel>> Delete(T model);      //D - Delete one
-        public Task DeleteById(int id);                      //D - Delete one by id
+        public Task<IBaseResponse<Tmodel>> Delete(T model);       //D - Delete one
+        public Task<IBaseResponse<bool>> Delete(int id);          //D - Delete one by id
 
     }
 }

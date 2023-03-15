@@ -176,11 +176,18 @@ namespace EPAMapp.Services.Implementations
                 return new BaseResponse<Tmodel>() { Description = e.Message };
             }
         }
-
-        public async Task DeleteById(int id)
+        public async Task<IBaseResponse<bool>> Delete(int id)
         {
-            var entity = await _repository.GetByIdAsync(id);
-            await Delete(entity);
+            try
+            {
+                await _repository.DeleteById(id);
+                return new BaseResponse<bool>() { Data = true };
+
+            }
+            catch (Exception e)
+            {
+                return new BaseResponse<bool>() { Description = e.Message };
+            }
         }
     }
 }
