@@ -3,6 +3,8 @@ using EPAMapp.DAL.Repositories.Interfaces;
 using EPAMapp.Domain.Helpers;
 using EPAMapp.Domain.Models.Common;
 using EPAMapp.Domain.Models.DTO.Common;
+using EPAMapp.Domain.Models.DTO.Create;
+using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Domain.Models.Interfaces;
 using EPAMapp.Domain.Models.Response;
 using EPAMapp.Services.Interfaces;
@@ -30,7 +32,7 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var existingUser = await _repositoryLogin.GetByEmailAsync(model.Email);
-                if (Exist<BaseEntity, BaseDTO, H>.EntityIsNotExist(existingUser)) return new BaseResponse<H>()
+                if (!Exist<BaseEntity, BaseDTO, H>.EntityIsNotExist(existingUser)) return new BaseResponse<H>()
                 {
                     Description = "Пользователь с таким email уже зарегистрирован."
 
@@ -38,11 +40,20 @@ namespace EPAMapp.Services.Implementations
 
                 model.Password = HashPasswordHelper.HashPassword(model.Password);
 
-                CreateMapper<Tmodel, DTOCreateBase> mapper = new();
-                Tmodel user = mapper.Map(model as DTOCreateBase);
+                User user = new()
+                {
+                    Email = model.Email,
+                    Password = model.Password,
+                    Name = "",
+                    Surname = ""
+                };
 
 
-                await _repository.Create(user);
+                //CreateMapper<Tmodel, DTOCreateBase> mapper = new();
+                //Tmodel user = mapper.Map(model as DTOCreateUser);
+
+
+                await _repository.Create(user as Tmodel);
                 return new BaseResponse<H>()
                 {
                     Data = user as H
@@ -65,7 +76,7 @@ namespace EPAMapp.Services.Implementations
                 var user = await _repositoryLogin.GetByEmailAsync(model.Email);
                 if (Exist<BaseEntity, BaseDTO, H>.EntityIsNotExist(user)) return new BaseResponse<H>()
                 {
-                    Description = "Пользователь с таким email уже зарегистрирован."
+                    Description = "Пользователь с таким email not зарегистрирован."
                 };
 
                 // Проверяем, что пароль пользователя совпадает с введенным паролем
