@@ -1,4 +1,5 @@
-﻿using EPAMapp.Domain.Models.DTO.Common;
+﻿using EPAMapp.Domain.Models.Common;
+using EPAMapp.Domain.Models.DTO.Common;
 using EPAMapp.Domain.Models.DTO.Create;
 using EPAMapp.Domain.Models.Entities;
 using EPAMapp.Domain.Models.Interfaces;
@@ -13,16 +14,16 @@ namespace EPAMapp.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IAsyncBaseService<BaseDTO, User> _services;
-        private readonly IAsyncLoginService<User> _loginService;
+        private readonly IAsyncLoginService<User, DTOAccountHolder> _loginService;
 
         public UserController(IAsyncBaseService<BaseDTO, User> services
-            , IAsyncLoginService<User> loginService)
+            , IAsyncLoginService<User, DTOAccountHolder> loginService)
         {
             _services = services;
             _loginService = loginService;
         }
         [HttpPost("register")]
-        public async Task<ActionResult<IBaseResponse<User>>> Register(User model)
+        public async Task<ActionResult<IBaseResponse<User>>> Register(DTOAccountHolder model)
         {
             var result = await _loginService.Register(model);
             if (result.Description != null) return BadRequest(result);
@@ -30,7 +31,7 @@ namespace EPAMapp.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<IBaseResponse<User>>> Login(User model)
+        public async Task<ActionResult<IBaseResponse<User>>> Login(DTOAccountHolder model)
         {
             var result = await _loginService.Login(model);
             if (result.Description != null) return BadRequest(result);
