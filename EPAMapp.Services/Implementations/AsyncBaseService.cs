@@ -158,7 +158,7 @@ namespace EPAMapp.Services.Implementations
             {
 
                 var entities = await _repository.GetNotesByUserIdAsync(id).Result.ToListAsync();
-                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entities as T)) return new BaseResponse<List<Tmodel>>()
+                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entities as List<Tmodel>)) return new BaseResponse<List<Tmodel>>()
                 {
                     Description = "Entity not found"
                 };
