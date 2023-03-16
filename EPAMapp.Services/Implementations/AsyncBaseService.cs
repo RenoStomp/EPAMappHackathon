@@ -152,24 +152,24 @@ namespace EPAMapp.Services.Implementations
                 return new BaseResponse<Tmodel>() { Description = e.Message };
             }
         }
-        public async Task<IBaseResponse<Tmodel>> GetNotesModelsByUserIdAsync(int id)
+        public async Task<IBaseResponse<List<Tmodel>>> GetNotesModelsByUserIdAsync(int id)
         {
             try
             {
 
                 var entities = await _repository.GetNotesByUserIdAsync(id).Result.ToListAsync();
-                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entities as T)) return new BaseResponse<Tmodel>()
+                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entities as List<Tmodel>)) return new BaseResponse<List<Tmodel>>()
                 {
                     Description = "Entity not found"
                 };
-                return new BaseResponse<Tmodel>()
+                return new BaseResponse<List<Tmodel>>()
                 {
-                    Data = entities as Tmodel
+                    Data = entities as List<Tmodel>
                 };
             }
             catch (Exception e)
             {
-                return new BaseResponse<Tmodel>() { Description = e.Message };
+                return new BaseResponse<List<Tmodel>>() { Description = e.Message };
             }
         }
 
@@ -178,7 +178,7 @@ namespace EPAMapp.Services.Implementations
             try
             {
                 var entity = await _repository.GetByIdAsync((model as DTOUpdateBase).Id);
-                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entity as T))
+                if (Exist<Tmodel, T, AccountHolder>.EntityIsNotExist(entity))
                 {
                     return new BaseResponse<Tmodel>
                     {
