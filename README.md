@@ -1,10 +1,10 @@
 # Zameshhauripsicititki.API
 
-#### This is the API for the Zameshhauripsicititki project. 
+### This is the API for the Zameshhauripsicititki project. 
 
 It provides endpoints for managing ***notes***, ***admins*** and ***user*** accounts.
 
-### Installation
+## Installation
 
 * Clone this repository.
 
@@ -12,7 +12,29 @@ It provides endpoints for managing ***notes***, ***admins*** and ***user*** acco
 
 * Build the solution.
 
-### Usage
+## Requirements
+
+**To run the project, the following is required:**
+
+* .NET 5.0 Runtime
+
+* Visual Studio 2019 or later
+
+## Running the Project
+
+**To run the project, follow these steps:**
+
+* Clone the repository to your computer:
+```
+git clone https://github.com/your-username/your-repo.git
+```
+* Open the project in Visual Studio.
+
+* Run the project in Visual Studio.
+
+* Open Swagger or another API testing tool and test the API endpoints.
+
+## Usage
 
 #### Note Endpoints
 
