@@ -22,6 +22,7 @@ namespace Zameshhauripsicititki.API.Controllers
             _services = services;
             _loginService = loginService;
         }
+        [HttpPost("login")]
         public async Task<ActionResult<IBaseResponse<Admin>>> Login(DTOAccountHolder model)
         {
             var result = await _loginService.Login(model);
