@@ -80,7 +80,7 @@ namespace EPAMapp.Services.Implementations
                 };
 
                 // Проверяем, что пароль пользователя совпадает с введенным паролем
-                if (user.Password != HashPasswordHelper.HashPassword(model.Password)) return new BaseResponse<H>()
+                if (HashPasswordHelper.HashPassword(user.Password) != HashPasswordHelper.HashPassword(model.Password)) return new BaseResponse<H>()
                 {
                     Description = "Неправильный пароль."
                 };
